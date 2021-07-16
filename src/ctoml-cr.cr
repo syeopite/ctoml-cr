@@ -48,7 +48,7 @@ module CtomlCr
 
     private def fetch_value(item)
       # Parse key-values, if any
-      value = fetch_underlying(item.value.val)
+      value = parse_underlying(item.value.val)
 
       LibC.free(item.value.key)
       LibC.free(item.value.val)
@@ -73,7 +73,7 @@ module CtomlCr
       return items
     end
 
-    private def fetch_underlying(raw)
+    private def parse_underlying(raw)
       raw = String.new(raw)
       if raw.starts_with? '"'
         value = raw.strip('"')
