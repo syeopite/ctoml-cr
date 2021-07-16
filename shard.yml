@@ -7,6 +7,6 @@ authors:
 crystal: 1.0.0
 
 scripts:
-  postinstall: cd src/ext && make
+  postinstall: cd src/ext && sh ./install.sh
 
 license: MIT
