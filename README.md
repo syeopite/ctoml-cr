@@ -1,6 +1,6 @@
 # ctoml-cr
 
-TODO: Write a description here
+Crystal bindings to the [tomlc99](https://github.com/cktan/tomlc99) library.
 
 ## Installation
 
@@ -18,13 +18,18 @@ TODO: Write a description here
 
 ```crystal
 require "ctoml-cr"
+
+data = File.read("example.toml")
+toml = TOML.parse(data) 
+
+# API is the same as JSON::Any
+typeof(toml) # => TOML::Any
+
+example_table = toml["example-table"].as_h
+typeof(example_table) # => Hash(String, TOML::Any)
+example_table["key"] # => "value"
+
 ```
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
 
 ## Contributing
 
