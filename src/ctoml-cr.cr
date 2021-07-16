@@ -14,31 +14,31 @@ module CtomlCr
         raise CTomlCrExceptions::TomlParseError.new("Error in file: '#{file}' that prevents parsing.")
       end
 
-      return CtomlCr::Any.new(self.parse_table(contents))
+      return CtomlCr::Any.new(self.fetch_table(contents))
     end
 
-    private def parse_table(contents)
+    private def fetch_table(contents)
       table = {} of String => CtomlCr::Any
 
       contents.value.nkval.times do |i|
         item =  contents.value.kval[i]
         key = String.new(item.value.key)
 
-        table[key] = CtomlCr::Any.new(parse_value(item))
+        table[key] = CtomlCr::Any.new(fetch_value(item))
       end
 
       contents.value.narr.times do |i|
         array_to_parse = contents.value.arr[i]
         key = String.new(array_to_parse.value.key)
 
-        arr = CtomlCr::Any.new(parse_array(array_to_parse))
+        arr = CtomlCr::Any.new(fetch_array(array_to_parse))
       end
 
       contents.value.ntab.times do |i|
         table_to_parse = contents.value.tab[i]
         key = String.new(table_to_parse.value.key)
 
-        table[key] = CtomlCr::Any.new(parse_table(table_to_parse))
+        table[key] = CtomlCr::Any.new(fetch_table(table_to_parse))
       end
 
       LibC.free(contents)
@@ -46,9 +46,9 @@ module CtomlCr
       return table
     end
 
-    private def parse_value(item)
+    private def fetch_value(item)
       # Parse key-values, if any
-      value = parse_underlying(item.value.val)
+      value = fetch_underlying(item.value.val)
 
       LibC.free(item.value.key)
       LibC.free(item.value.val)
@@ -57,23 +57,23 @@ module CtomlCr
       return value
     end
 
-    private def parse_array(array_to_parse)
+    private def fetch_array(array_to_parse)
       items = [] of CtomlCr::Any
       array_to_parse.value.nitem.times do |array_index|
         item = array_to_parse.value.item[array_index]
         if item.arr
-          items << CtomlCr::Any.new(parse_array(item.arr))
+          items << CtomlCr::Any.new(fetch_array(item.arr))
         elsif item.tab
-          items << CtomlCr::Any.new(parse_table(item.tab))
+          items << CtomlCr::Any.new(fetch_table(item.tab))
         else
-          items << CtomlCr::Any.new(parse_underlying(item.val))
+          items << CtomlCr::Any.new(fetch_underlying(item.val))
         end
       end
 
       return items
     end
 
-    private def parse_underlying(raw)
+    private def fetch_underlying(raw)
       raw = String.new(raw)
       if raw.starts_with? '"'
         value = raw.strip('"')
