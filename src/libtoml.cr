@@ -35,8 +35,22 @@ lib LibToml
 
   fun toml_parse(conf : LibC::Char*, errbuf : LibC::Char*, errbufsz : LibC::Int) : TomlTableT*
   fun toml_free(tab : TomlTableT*)
+
   fun toml_table_in(tab : TomlTableT*, key : LibC::Char*) : TomlTableT*
   fun toml_array_in(tab : TomlTableT*, key : LibC::Char*) : TomlArrayT*
+  fun toml_string_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
+  fun toml_bool_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
+  fun toml_int_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
+  fun toml_double_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
+  fun toml_timestamp_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
+
+  fun toml_string_at(arr : TomlArrayT*, idx : LibC::Int);
+  fun toml_bool_at(arr : TomlArrayT*, idx : LibC::Int);
+  fun toml_int_at(arr : TomlArrayT*, idx : LibC::Int );
+  fun toml_double_at(arr : TomlArrayT*, idx : LibC::Int );
+  fun toml_timestamp_at(arr : TomlArrayT*, idx : LibC::Int);
+  fun toml_table_at(arr : TomlArrayT*, idx : LibC::Int);
+  fun toml_array_at(arr : TomlArrayT*, idx : LibC::Int)
 
   # Data container
   struct TomlDatumT
@@ -76,10 +90,4 @@ lib LibToml
     millisec : LibC::Int
     z : LibC::Char[10]
   end
-
-  fun toml_string_in(arr : TomlTableT*, key : LibC::Char*) : TomlDatumT
-  fun toml_bool_in(arr : TomlTableT*, key : LibC::Char*) : TomlDatumT
-  fun toml_int_in(arr : TomlTableT*, key : LibC::Char*) : TomlDatumT
-  fun toml_double_in(arr : TomlTableT*, key : LibC::Char*) : TomlDatumT
-  fun toml_timestamp_in(arr : TomlTableT*, key : LibC::Char*) : TomlDatumT
 end
