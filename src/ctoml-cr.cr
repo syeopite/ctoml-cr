@@ -27,6 +27,13 @@ module CtomlCr
         table[key] = CtomlCr::Any.new(parse_value(item))
       end
 
+      contents.value.narr.times do |i|
+        array_to_parse = contents.value.arr[i]
+        key = String.new(array_to_parse.value.key)
+
+        arr = CtomlCr::Any.new(parse_array(array_to_parse))
+      end
+
       return table
     end
 
@@ -39,6 +46,22 @@ module CtomlCr
       LibC.free(item)
 
       return value
+    end
+
+    private def parse_array(array_to_parse)
+      items = [] of CtomlCr::Any
+      array_to_parse.value.nitem.times do |array_index|
+        item = array_to_parse.value.item[array_index]
+        if item.arr
+          items << CtomlCr::Any.new(parse_array(item.arr))
+        elsif item.tab
+          items << CtomlCr::Any.new(parse_table(item.tab))
+        else
+          items << CtomlCr::Any.new(parse_underlying(item.val))
+        end
+      end
+
+      return items
     end
 
     private def parse_underlying(raw)
