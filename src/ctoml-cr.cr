@@ -2,7 +2,31 @@ require "./libtoml"
 require "./helpers"
 require "./any"
 
+# The TOML module allows parsing TOML documents through the usage of the tomlc99 C library
+#
+# ### Parsing with `TOML.parse`
+#
+# `TOML.parse` will return an `Any`, which is a convenient wrapper around all possible TOML types,
+# making it easy to traverse a complex TOML structure but requires some casts from time to time,
+# mostly via some method invocations.
+#
+# ```
+# require "ctoml-cr"
+#
+# value = TOML.parse("x=[1, 2, 3]") # : TOML::Any
+#
+# value[0]              # => 1
+# typeof(value[0])      # => TOML::Any
+# value[0].as_i         # => 1
+# typeof(value[0].as_i) # => Int32
+#
+# value[0] + 1       # Error, because value[0] is TOML::Any
+# value[0].as_i + 10 # => 11
+# ```
+#
+# Documentation is an edited version of the JSON module from Crystal
 module TOML
+  # Parse a TOML document as a `TOML::Any`.
   def self.parse(data : String)
     contents = LibToml.toml_parse(data, out error, 200)
     if !contents
