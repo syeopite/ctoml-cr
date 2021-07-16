@@ -5,10 +5,13 @@ lib LibToml
     key : LibC::Char*
     implicit : Bool
     readonly : Bool
+
     nkval : LibC::Int
     kval : TomlKeyvalT**
+
     narr : LibC::Int
     arr : TomlArrayT**
+
     ntab : LibC::Int
     tab : TomlTableT**
   end
@@ -22,6 +25,7 @@ lib LibToml
     key : LibC::Char*
     kind : LibC::Int
     type : LibC::Int
+
     nitem : LibC::Int
     item : TomlArritemT*
   end
@@ -35,59 +39,4 @@ lib LibToml
 
   fun toml_parse(conf : LibC::Char*, errbuf : LibC::Char*, errbufsz : LibC::Int) : TomlTableT*
   fun toml_free(tab : TomlTableT*)
-
-  fun toml_table_in(tab : TomlTableT*, key : LibC::Char*) : TomlTableT*
-  fun toml_array_in(tab : TomlTableT*, key : LibC::Char*) : TomlArrayT*
-  fun toml_string_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
-  fun toml_bool_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
-  fun toml_int_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
-  fun toml_double_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
-  fun toml_timestamp_in(tab : TomlTableT*, key : LibC::Char*) : TomlDatumT
-
-  fun toml_string_at(arr : TomlArrayT*, idx : LibC::Int);
-  fun toml_bool_at(arr : TomlArrayT*, idx : LibC::Int);
-  fun toml_int_at(arr : TomlArrayT*, idx : LibC::Int );
-  fun toml_double_at(arr : TomlArrayT*, idx : LibC::Int );
-  fun toml_timestamp_at(arr : TomlArrayT*, idx : LibC::Int);
-  fun toml_table_at(arr : TomlArrayT*, idx : LibC::Int);
-  fun toml_array_at(arr : TomlArrayT*, idx : LibC::Int)
-
-  # Data container
-  struct TomlDatumT
-    ok : LibC::Int
-    u : TomlDatumTU
-  end
-
-  # Possible data
-  union TomlDatumTU
-    ts : TomlTimestampT* # Timestamp
-    s : LibC::Char* # String value
-    b : LibC::Int# Bool value
-    i : UInt64 # Interger value
-    d : LibC::Double # Double value
-  end
-
-  # Timestamp
-  struct TomlTimestampT
-    __buffer : TomlTimestampTBuffer
-    year : LibC::Int*
-    month : LibC::Int*
-    day : LibC::Int*
-    hour : LibC::Int*
-    minute : LibC::Int*
-    second : LibC::Int*
-    millisec : LibC::Int*
-    z : LibC::Char*
-  end
-
-  struct TomlTimestampTBuffer
-    year : LibC::Int
-    month : LibC::Int
-    day : LibC::Int
-    hour : LibC::Int
-    minute : LibC::Int
-    second : LibC::Int
-    millisec : LibC::Int
-    z : LibC::Char[10]
-  end
 end
