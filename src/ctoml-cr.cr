@@ -34,6 +34,15 @@ module CtomlCr
         arr = CtomlCr::Any.new(parse_array(array_to_parse))
       end
 
+      contents.value.ntab.times do |i|
+        table_to_parse = contents.value.tab[i]
+        key = String.new(table_to_parse.value.key)
+
+        table[key] = CtomlCr::Any.new(parse_table(table_to_parse))
+      end
+
+      LibC.free(contents)
+
       return table
     end
 
