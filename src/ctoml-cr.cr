@@ -60,18 +60,25 @@ module CtomlCr
     private def fetch_array(array_to_parse)
       items = [] of CtomlCr::Any
       array_to_parse.value.nitem.times do |array_index|
-        item = array_to_parse.value.item[array_index]
+        item : LibToml::TomlArritemT = array_to_parse.value.item[array_index]
+
+        # Each TomlArritemT can only store one of the following:
         if item.arr
           items << CtomlCr::Any.new(fetch_array(item.arr))
+          LibC.free(item.arr)
         elsif item.tab
           items << CtomlCr::Any.new(fetch_table(item.tab))
+          LibC.free(item.tab)
         else
-          items << CtomlCr::Any.new(fetch_underlying(item.val))
+          items << CtomlCr::Any.new(parse_underlying(item.val))
+          LibC.free(item.val)
         end
       end
 
+      LibC.free(array_to_parse)
       return items
     end
+
 
     private def parse_underlying(raw)
       raw = String.new(raw)
