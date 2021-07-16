@@ -110,3 +110,9 @@ module TOML
     return value
   end
 end
+
+{% if flag?(:stdin_decode_mode) %}
+  require "json"
+  contents = STDIN.gets_to_end.strip
+  STDOUT.puts TOML.parse(contents).as_h.to_json
+{% end %}
