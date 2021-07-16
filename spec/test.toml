@@ -1,0 +1,27 @@
+number = 123
+floats = 123.123
+array = [1,2,3,4,5,6]
+nested_arraies = [
+    [1,2,3,4,5,6, [
+        7,8,9,10,11
+    ]],
+    "Hello", "testing",
+]
+
+[table-1]
+    key = "something"
+    key2 = "Another key"
+
+inline-table = { first = "Tom", last = "Preston-Werner" }
+
+[[products]]
+name = "Hammer"
+sku = 738594937
+
+[[products]]  # empty table within the array
+
+[[products]]
+name = "Nail"
+sku = 284758393
+
+color = "gray"
