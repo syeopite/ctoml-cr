@@ -79,7 +79,6 @@ module CtomlCr
       return items
     end
 
-
     private def parse_underlying(raw)
       raw = String.new(raw)
       if raw.starts_with? '"'
