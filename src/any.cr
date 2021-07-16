@@ -1,4 +1,4 @@
-# CtomlCr::Any is a convenient wrapper around all possible TOML types (CtomlCr::Any::Type) and can be used for traversing dynamic or unknown CtomlCr structures.
+# CtomlCr::Any is a convenient wrapper around all possible TOML types (CtomlCr::Any::Type) and can be used for traversing dynamic or unknown TOML structures.
 #
 # Aka it's the same as what `JSON::Any`, and `YAML::Any` does but for TOML.
 struct CtomlCr::Any
