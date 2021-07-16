@@ -2,13 +2,11 @@ require "./libtoml"
 require "./helpers"
 require "./any"
 
-
 module TOML
-  def self.load(file)
-    raw_string = File.read(file)
-    contents = LibToml.toml_parse(raw_string, out error, 200)
+  def self.parse(data : String)
+    contents = LibToml.toml_parse(data, out error, 200)
     if !contents
-      raise CTomlCrExceptions::TomlParseError.new("Error in file: '#{file}' that prevents parsing.")
+      raise CTomlCrExceptions::TomlParseError
     end
 
     return TOML::Any.new(self.fetch_table(contents))
@@ -18,7 +16,7 @@ module TOML
     table = {} of String => TOML::Any
 
     contents.value.nkval.times do |i|
-      item =  contents.value.kval[i]
+      item = contents.value.kval[i]
       key = String.new(item.value.key)
 
       table[key] = TOML::Any.new(fetch_value(item))
