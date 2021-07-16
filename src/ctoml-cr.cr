@@ -30,7 +30,7 @@ module TOML
   def self.parse(data : String)
     contents = LibToml.toml_parse(data, out error, 200)
     if !contents
-      raise CTomlCrExceptions::TomlParseError
+      raise CTomlCrExceptions::TomlParseError.new
     end
 
     return TOML::Any.new(self.fetch_table(contents))
