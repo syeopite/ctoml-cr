@@ -50,7 +50,7 @@ module TOML
       array_to_parse = contents.value.arr[i]
       key = String.new(array_to_parse.value.key)
 
-      arr = TOML::Any.new(fetch_array(array_to_parse))
+      table[key] = TOML::Any.new(fetch_array(array_to_parse))
     end
 
     contents.value.ntab.times do |i|
@@ -84,17 +84,14 @@ module TOML
       # Each TomlArritemT can only store one of the following:
       if item.arr
         items << TOML::Any.new(fetch_array(item.arr))
-        LibC.free(item.arr)
       elsif item.tab
         items << TOML::Any.new(fetch_table(item.tab))
-        LibC.free(item.tab)
       else
         items << TOML::Any.new(parse_underlying(item.val))
         LibC.free(item.val)
       end
     end
 
-    LibC.free(array_to_parse)
     return items
   end
 
