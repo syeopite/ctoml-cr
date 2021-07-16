@@ -84,7 +84,7 @@ module TOML
       begin
         value = Time::Format::RFC_3339.parse(raw)
       rescue ex : Time::Format::Error
-        value = raw.to_i64
+        value = raw.includes?(".") ? raw.to_f64 : raw.to_i64
       end
     end
 
