@@ -42,4 +42,4 @@ example_table["key"] # => "value"
 ## Contributors
 
 - [syeopite](https://github.com/syeopite) - creator and maintainer
-- [cktan][https://github.com/cktan/tomlc99] - creator of the C library (tomlc99) this shard binds to
+- [cktan](https://github.com/cktan/tomlc99) - creator of the C library (tomlc99) this shard binds to
