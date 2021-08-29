@@ -1,6 +1,6 @@
 # ctoml-cr
 
-Crystal bindings to the [tomlc99](https://github.com/cktan/tomlc99) library.
+Crystal bindings to the [tomlc99](https://github.com/cktan/tomlc99) library. Compliant to TOML v1.0.0.
 
 ## Installation
 
