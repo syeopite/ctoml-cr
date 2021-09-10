@@ -12,6 +12,7 @@ on:
       - "*.md"
       - LICENCE
       - .editorconfig
+  workflow-dispatch:
 
 jobs:
   build:
