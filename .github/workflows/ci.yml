@@ -43,23 +43,11 @@ jobs:
         with:
           crystal: ${{ matrix.crystal }}
 
-      - name: Cache Shards
-        uses: actions/cache@v2
-        with:
-          path: ./lib
-          key: shards-${{ hashFiles('shard.lock') }}
-
-      - name: Install Shards
-        run: |
-          if ! shards check; then
-            shards install
-          fi
-
       - name: Cache ctoml library
         uses: actions/cache@v2
         with:
           path: ./src/ext/libtoml.a
-          key: libtoml-${{ hashFiles('./src/ext/libtoml.a') }}
+          key: libtoml
 
       - name: "Install and make ctoml lib"
         run: |
