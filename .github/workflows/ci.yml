@@ -54,6 +54,18 @@ jobs:
             shards install
           fi
 
+      - name: Cache ctoml library
+        uses: actions/cache@v2
+        with:
+          path: ./src/ext/libtoml.a
+          key: libtoml-${{ hashFiles('./src/ext/libtoml.a') }}
+
+      - name: "Install and make ctoml lib"
+        run: |
+          if [ ! -f ./src/ext/libtoml.a ]; then
+            cd src/ext && sh ./install.sh && cd ../../
+          fi
+
       - name: Run tests
         run: crystal spec --error-trace
 
