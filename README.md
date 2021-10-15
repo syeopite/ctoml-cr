@@ -39,7 +39,6 @@ example_table["key"] # => "value"
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-## Contributors
+## Credits
 
-- [syeopite](https://github.com/syeopite) - creator and maintainer
-- [cktan](https://github.com/cktan/tomlc99) - creator of the C library (tomlc99) this shard binds to
+Special thanks to [@cktan](https://github.com/cktan) for creating tomlc99!
