@@ -28,7 +28,8 @@ require "./any"
 module TOML
   # Parse a TOML document as a `TOML::Any`.
   def self.parse(data : String)
-    contents = LibToml.toml_parse(data, out error, 200)
+    contents = LibToml.toml_parse(data, out error, sizeof(LibC::Char))
+
     if !contents
       raise CTomlCrExceptions::TomlParseError.new
     end
@@ -114,5 +115,9 @@ end
 {% if flag?(:stdin_decode_mode) %}
   require "json"
   contents = STDIN.gets_to_end.strip
-  STDOUT.puts TOML.parse(contents).as_h.to_json
+  begin
+    STDOUT.puts TOML.parse(contents).as_h.to_json
+  rescue
+    exit(1)
+  end
 {% end %}
