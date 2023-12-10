@@ -1,9 +1,9 @@
-# TOML::Any is a convenient wrapper around all possible TOML types (TOML::Any::Type) and can be used for traversing dynamic or unknown TOML structures.
+# TOML::Any is a convenient wrapper around all possible TOML types (`TOML::Any::Type`) and can be used for traversing dynamic or unknown TOML structures.
 #
 # Aka it's the same as what `JSON::Any`, and `YAML::Any` does but for TOML.
 struct TOML::Any
   # All possible TOML types
-  alias Type = String | Int64 | Float64 | Bool | Time | Hash(String, Any) | Array(Any)
+  alias Type = String | Int64 | Float64 | Bool | Time | Time::Span | Hash(String, Any) | Array(Any)
 
   # Returns the raw underlying value.
   getter raw : Type
@@ -195,7 +195,7 @@ struct TOML::Any
 
   # Checks that the underlying value is `Time`, and returns its value.
   # Raises otherwise.
-  def as_time :  Time
+  def as_time : Time
     @raw.as(Time)
   end
 
@@ -203,6 +203,18 @@ struct TOML::Any
   # Returns `nil` otherwise.
   def as_time? : Time?
     as_time if @raw.is_a?(Time)
+  end
+
+  # Checks that the underlying value is `Time::Span`, and returns its value.
+  # Raises otherwise.
+  def as_time_span : Time::Span
+    @raw.as(Time::Span)
+  end
+
+  # Checks that the underlying value is `Time::Span`, and returns its value.
+  # Returns `nil` otherwise.
+  def as_time_span? : Time::Span?
+    as_time_span if @raw.is_a?(Time::Span)
   end
 
   # :nodoc:
@@ -235,7 +247,12 @@ struct TOML::Any
 
   # :nodoc:
   def to_json(json : JSON::Builder)
-    raw.to_json(json)
+    raw_value = @raw
+    if raw_value.is_a? Time::Span
+      return @raw.to_s
+    else
+      return raw_value.to_json
+    end
   end
 
   def to_yaml(yaml : YAML::Nodes::Builder)
