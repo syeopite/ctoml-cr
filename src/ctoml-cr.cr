@@ -113,11 +113,11 @@ module TOML
 end
 
 {% if flag?(:stdin_decode_mode) %}
-  require "json"
+  require "./toml-test-json.cr"
   contents = STDIN.gets_to_end.strip
   begin
-    STDOUT.puts TOML.parse(contents).as_h.to_json
-  rescue
+    STDOUT.puts TOML.build_test_json(TOML.parse(contents).as_h)
+  rescue ex
     exit(1)
   end
 {% end %}
