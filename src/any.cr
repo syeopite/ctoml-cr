@@ -193,6 +193,18 @@ struct TOML::Any
     as_h if @raw.is_a?(Hash)
   end
 
+  # Checks that the underlying value is `Time`, and returns its value.
+  # Raises otherwise.
+  def as_time :  Time
+    @raw.as(Time)
+  end
+
+  # Checks that the underlying value is Time, and returns its value.
+  # Returns `nil` otherwise.
+  def as_time? : Time?
+    as_time if @raw.is_a?(Time)
+  end
+
   # :nodoc:
   def inspect(io : IO) : Nil
     @raw.inspect(io)
