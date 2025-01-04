@@ -15,11 +15,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-test:
 
     runs-on: ubuntu-latest
 
-    name: "build - crystal: ${{ matrix.crystal }}, stable: ${{ matrix.stable }}"
+    name: "build and test - crystal: ${{ matrix.crystal }}, stable: ${{ matrix.stable }}"
 
     continue-on-error: ${{ !matrix.stable }}
 
@@ -59,13 +59,37 @@ jobs:
       - name: Run tests
         run: crystal spec --error-trace
 
-      - name: Run lint
+      - name: Build
+        run: crystal build --warnings all --error-on-warnings --error-trace src/ctoml-cr.cr
+q
+  formatter:
+    runs-on: ubuntu-latest
+    continues-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1.8.0
+        with:
+          crystal: latest
+
+      - name: Cache ctoml library
+        uses: actions/cache@v3
+        with:
+          path: ./src/ext/libtoml.a
+          key: libtoml
+
+      - name: "Install and make ctoml lib"
+        run: |
+          if [ ! -f ./src/ext/libtoml.a ]; then
+            cd src/ext && sh ./install.sh && cd ../../
+          fi
+
+      - name: Check Crystal formatter compliance
         run: |
           if ! crystal tool format --check; then
             crystal tool format
             git diff
             exit 1
           fi
-
-      - name: Build
-        run: crystal build --warnings all --error-on-warnings --error-trace src/ctoml-cr.cr
