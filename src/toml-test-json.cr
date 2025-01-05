@@ -63,7 +63,6 @@ module TOML
       return {type_field(json, "time-local", "#{value.hours}:#{value.minutes}:#{value.seconds}#{value.milliseconds > 0 ? ".#{value.milliseconds}" : ""}")}
     else
       raise Exception.new("Invalid type")
-      exit(1)
     end
   end
 end
