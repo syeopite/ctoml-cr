@@ -61,10 +61,10 @@ jobs:
 
       - name: Build
         run: crystal build --warnings all --error-on-warnings --error-trace src/ctoml-cr.cr
-q
+
   formatter:
     runs-on: ubuntu-latest
-    continues-on-error: true
+    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v4
