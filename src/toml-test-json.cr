@@ -34,6 +34,24 @@ module TOML
     end
   end
 
+  private def handle_date(json : JSON::Builder, value : Time)
+    value = value.as_time
+
+    if value.year != 0 && (value.hour != 0 || value.minute != 0 || value.second != 0)
+      if value.location != TOML::PlaceholderLocation
+        if value.zone.offset == 0
+          return {type_field(json, "datetime", value.to_s("%Y-%m-%dT%H:%M:%S.%3NZ"))}
+        else
+          return {type_field(json, "datetime", value.to_s("%Y-%m-%dT%H:%M:%S.%3N%:z"))}
+        end
+      else
+        return {type_field(json, "datetime-local", value.to_s("%Y-%m-%dT%H:%M:%S.%3N"))}
+      end
+    else
+      return {type_field(json, "date-local", value.to_s("%Y-%m-%d"))}
+    end
+  end
+
   private def handle_item(json : JSON::Builder, value)
     case value.raw
     when Hash(String, TOML::Any) then return {handle_table(json, value.as_h)}
@@ -42,22 +60,7 @@ module TOML
     when Float64                 then return {type_field(json, "float", value.to_json(json))}
     when Bool                    then return {type_field(json, "bool", value.to_json(json))}
     when Array(TOML::Any)        then return {handle_array(json, value.as_a)}
-    when Time
-      value = value.as_time
-
-      if value.year != 0 && (value.hour != 0 || value.minute != 0 || value.second != 0)
-        if value.location != TOML::PlaceholderLocation
-          if value.zone.offset == 0
-            return {type_field(json, "datetime", value.to_s("%Y-%m-%dT%H:%M:%S.%3NZ"))}
-          else
-            return {type_field(json, "datetime", value.to_s("%Y-%m-%dT%H:%M:%S.%3N%:z"))}
-          end
-        else
-          return {type_field(json, "datetime-local", value.to_s("%Y-%m-%dT%H:%M:%S.%3N"))}
-        end
-      else
-        return {type_field(json, "date-local", value.to_s("%Y-%m-%d"))}
-      end
+    when Time                    then return handle_date(json, value)
     when Time::Span
       value = value.as_time_span
       return {type_field(json, "time-local", "#{value.hours}:#{value.minutes}:#{value.seconds}#{value.milliseconds > 0 ? ".#{value.milliseconds}" : ""}")}
