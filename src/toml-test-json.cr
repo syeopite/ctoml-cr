@@ -4,7 +4,7 @@ module TOML
   extend self
 
   def build_test_json(toml_dict : Hash(String, TOML::Any))
-    JSON.build(indent = "  ") do |json|
+    JSON.build(indent: "  ") do |json|
       handle_table(json, toml_dict)
     end
   end

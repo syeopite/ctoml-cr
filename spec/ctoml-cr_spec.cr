@@ -10,7 +10,7 @@ describe TOML do
     toml["array"].should eq([1, 2, 3, 4, 5, 6])
 
     toml["time1"].should eq(Time::Format::RFC_3339.parse("1987-07-05T17:45:56.123Z"))
-    toml["time2"].should eq(Time.parse("1987-07-05T17:45:56.123", "%Y-%m-%dT%H:%M:%S.%3N", location = TOML::PlaceholderLocation))
+    toml["time2"].should eq(Time.parse("1987-07-05T17:45:56.123", "%Y-%m-%dT%H:%M:%S.%3N", location: TOML::PlaceholderLocation))
     toml["time3"].should eq(Time::Format::RFC_3339.parse("1987-07-05T0:0:0.0Z"))
     toml["time4"].should eq(Time::Span.new(hours: 17, minutes: 45, seconds: 56))
     toml["time5"].should eq(Time::Span.new(hours: 17, minutes: 45, seconds: 56, nanoseconds: 123000000))
