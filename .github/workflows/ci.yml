@@ -30,8 +30,8 @@ jobs:
         crystal:
           - 1.0.0
           - 1.12.2
-          - 1.13.2
           - 1.14.0
+          - 1.15.0
         include:
           - crystal: nightly
             stable: false
