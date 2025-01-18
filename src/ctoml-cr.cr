@@ -72,8 +72,6 @@ module TOML
   private def self.fetch_array(array_to_parse) : Array(TOML::Any)
     items = [] of TOML::Any
 
-    arr_type = array_to_parse.value.kind.chr
-
     array_to_parse.value.nitem.times do |array_index|
       raw_item : LibToml::TomlArritemT = array_to_parse.value.item[array_index]
 

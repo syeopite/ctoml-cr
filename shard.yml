@@ -4,6 +4,11 @@ version: 0.3.0
 authors:
   - syeopite <syeopite@syeopite.dev>
 
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 1.6.4
+
 crystal: ">= 1.0, < 2.0"
 
 scripts:
