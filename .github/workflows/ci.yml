@@ -29,23 +29,23 @@ jobs:
         stable: [true]
         crystal:
           - 1.0.0
-          - 1.12.2
-          - 1.14.0
           - 1.15.0
+          - 1.16.0
+          - 1.17.1
         include:
           - crystal: nightly
             stable: false
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Crystal
-        uses: crystal-lang/install-crystal@v1.8.0
+        uses: crystal-lang/install-crystal@v1.8.2
         with:
           crystal: ${{ matrix.crystal }}
 
       - name: Cache ctoml library
-        uses: actions/cache@v3
+        uses: actions/cache@v4.2.4
         with:
           path: ./src/ext/libtoml.a
           key: libtoml
@@ -67,10 +67,10 @@ jobs:
     continue-on-error: true
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Crystal
-        uses: crystal-lang/install-crystal@v1.8.0
+        uses: crystal-lang/install-crystal@v1.8.2
         with:
           crystal: latest
 
